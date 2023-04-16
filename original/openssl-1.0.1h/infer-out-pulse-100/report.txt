@@ -1,0 +1,486 @@
+#0
+apps/apps.c:532: error: Use After Free
+  The call to `UI_create_method` ends up calling `BUF_strndup` (after 1 more call) and may trigger the following issue: call to `UI_create_method()` eventually accesses memory that was invalidated by call to `free()` during the call to `UI_create_method()` on line 81.
+  530. int setup_ui_method(void)
+  531. 	{
+  532. 	ui_method = UI_create_method("OpenSSL application user interface");
+                    ^
+  533. 	UI_method_set_opener(ui_method, ui_open);
+  534. 	UI_method_set_reader(ui_method, ui_read);
+
+#1
+apps/apps.c:1545: error: Null Dereference
+  `p` could be null (last assigned on line 1544) and is dereferenced in call to `BUF_strlcpy()`.
+  1543. 	len=strlen(t)+strlen(OPENSSL_CONF)+2;
+  1544. 	p=OPENSSL_malloc(len);
+  1545. 	BUF_strlcpy(p,t,len);
+         ^
+  1546. #ifndef OPENSSL_SYS_VMS
+  1547. 	BUF_strlcat(p,"/",len);
+
+#2
+apps/apps.c:1545: error: Use After Free
+  call to `BUF_strlcpy()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strlcpy()` on line 1545.
+  1543. 	len=strlen(t)+strlen(OPENSSL_CONF)+2;
+  1544. 	p=OPENSSL_malloc(len);
+  1545. 	BUF_strlcpy(p,t,len);
+         ^
+  1546. #ifndef OPENSSL_SYS_VMS
+  1547. 	BUF_strlcat(p,"/",len);
+
+#3
+apps/apps.c:1547: error: Null Dereference
+  `p` could be null (last assigned on line 1544) and is dereferenced in call to `BUF_strlcat()`.
+  1545. 	BUF_strlcpy(p,t,len);
+  1546. #ifndef OPENSSL_SYS_VMS
+  1547. 	BUF_strlcat(p,"/",len);
+         ^
+  1548. #endif
+  1549. 	BUF_strlcat(p,OPENSSL_CONF,len);
+
+#4
+apps/apps.c:1547: error: Use After Free
+  The call to `BUF_strlcat` may trigger the following issue: call to `BUF_strlcat()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strlcat()` on line 118.
+  1545. 	BUF_strlcpy(p,t,len);
+  1546. #ifndef OPENSSL_SYS_VMS
+  1547. 	BUF_strlcat(p,"/",len);
+         ^
+  1548. #endif
+  1549. 	BUF_strlcat(p,OPENSSL_CONF,len);
+
+#5
+apps/apps.c:1549: error: Null Dereference
+  `p` could be null (last assigned on line 1544) and is dereferenced in call to `BUF_strlcat()`.
+  1547. 	BUF_strlcat(p,"/",len);
+  1548. #endif
+  1549. 	BUF_strlcat(p,OPENSSL_CONF,len);
+         ^
+  1550. 
+  1551. 	return p;
+
+#6
+apps/apps.c:1549: error: Use After Free
+  The call to `BUF_strlcat` may trigger the following issue: call to `BUF_strlcat()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strlcat()` on line 118.
+  1547. 	BUF_strlcat(p,"/",len);
+  1548. #endif
+  1549. 	BUF_strlcat(p,OPENSSL_CONF,len);
+         ^
+  1550. 
+  1551. 	return p;
+
+#7
+crypto/asn1/a_object.c:250: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 245 is not freed after the last access at line 250, column 6.
+  248. 		i2t_ASN1_OBJECT(p,i + 1,a);
+  249. 		}
+  250. 	if (i <= 0)
+            ^
+  251. 		return BIO_write(bp, "<INVALID>", 9);
+  252. 	BIO_write(bp,p,i);
+
+#8
+crypto/asn1/a_strnid.c:238: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 225 is not freed after the last access at line 238, column 14.
+  236. 	if(maxsize != -1) tmp->maxsize = maxsize;
+  237. 	tmp->mask = mask;
+  238. 	if(new_nid) sk_ASN1_STRING_TABLE_push(stable, tmp);
+                    ^
+  239. 	return 1;
+  240. }
+
+#9
+crypto/asn1/asn_mime.c:829: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 825 is not freed after the last access at line 829, column 7.
+  827. 	mhdr->name = tmpname;
+  828. 	mhdr->value = tmpval;
+  829. 	if(!(mhdr->params = sk_MIME_PARAM_new(mime_param_cmp))) return NULL;
+             ^
+  830. 	return mhdr;
+  831. }
+
+#10
+crypto/asn1/asn_mime.c:858: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 854 is not freed after the last access at line 858, column 2.
+  856. 	mparam->param_name = tmpname;
+  857. 	mparam->param_value = tmpval;
+  858. 	sk_MIME_PARAM_push(mhdr->params, mparam);
+        ^
+  859. 	return 1;
+  860. }
+
+#11
+crypto/asn1/bio_asn1.c:156: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 153 is not freed after the last access at line 156, column 7.
+  154. 	if (!ctx)
+  155. 		return 0;
+  156. 	if (!asn1_bio_init(ctx, DEFAULT_ASN1_BUF_SIZE))
+             ^
+  157. 		return 0;
+  158. 	b->init = 1;
+
+#12
+crypto/asn1/evp_asn1.c:69: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `ASN1_STRING_type_new()` on line 68 is not freed after the last access at line 69, column 7.
+  67. 
+  68. 	if ((os=M_ASN1_OCTET_STRING_new()) == NULL) return(0);
+  69. 	if (!M_ASN1_OCTET_STRING_set(os,data,len)) return(0);
+            ^
+  70. 	ASN1_TYPE_set(a,V_ASN1_OCTET_STRING,os);
+  71. 	return(1);
+
+#13
+crypto/asn1/tasn_enc.c:457: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 456 is not freed after the last access at line 457, column 9.
+  455. 						* sizeof(*derlst));
+  456. 			tmpdat = OPENSSL_malloc(skcontlen);
+  457. 			if (!derlst || !tmpdat)
+               ^
+  458. 				return 0;
+  459. 			}
+
+#14
+crypto/asn1/tasn_enc.c:457: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 454 is not freed after the last access at line 457, column 20.
+  455. 						* sizeof(*derlst));
+  456. 			tmpdat = OPENSSL_malloc(skcontlen);
+  457. 			if (!derlst || !tmpdat)
+                          ^
+  458. 				return 0;
+  459. 			}
+
+#15
+crypto/asn1/tasn_utl.c:180: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 175 is not freed after the last access at line 180, column 2.
+  178. 	memcpy(enc->enc, in, inlen);
+  179. 	enc->len = inlen;
+  180. 	enc->modified = 0;
+        ^
+  181. 
+  182. 	return 1;
+
+#16
+crypto/asn1/x_bignum.c:132: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `BN_bin2bn()` on line 132 is not freed after the last access at line 132, column 6.
+  130. 	if(!*pval) bn_new(pval, it);
+  131. 	bn  = (BIGNUM *)*pval;
+  132. 	if(!BN_bin2bn(cont, len, bn)) {
+            ^
+  133. 		bn_free(pval, it);
+  134. 		return 0;
+
+#17
+crypto/conf/conf_def.c:237: error: Use After Free
+  call to `BUF_strlcpy()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strlcpy()` on line 237.
+  235. 		goto err;
+  236. 		}
+  237. 	BUF_strlcpy(section,"default",10);
+        ^
+  238. 
+  239. 	if (_CONF_new_data(conf) == 0)
+
+#18
+crypto/conf/conf_mod.c:311: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `BUF_strdup()` on line 304 is not freed after the last access at line 311, column 3.
+  309. 	if (!sk_CONF_MODULE_push(supported_modules, tmod))
+  310. 		{
+  311. 		OPENSSL_free(tmod);
+         ^
+  312. 		return NULL;
+  313. 		}
+
+#19
+crypto/conf/conf_mod.c:553: error: Use After Free
+  The call to `BUF_strdup` in turn calls `BUF_strndup` and may trigger the following issue: call to `BUF_strdup()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strdup()` on line 81.
+  551. 	file = getenv("OPENSSL_CONF");
+  552. 	if (file) 
+  553. 		return BUF_strdup(file);
+                ^
+  554. 
+  555. 	len = strlen(X509_get_default_cert_area());
+
+#20
+crypto/conf/conf_mod.c:565: error: Use After Free
+  call to `BUF_strlcpy()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strlcpy()` on line 565.
+  563. 	if (!file)
+  564. 		return NULL;
+  565. 	BUF_strlcpy(file,X509_get_default_cert_area(),len + 1);
+        ^
+  566. #ifndef OPENSSL_SYS_VMS
+  567. 	BUF_strlcat(file,"/",len + 1);
+
+#21
+crypto/conf/conf_mod.c:567: error: Use After Free
+  The call to `BUF_strlcat` may trigger the following issue: call to `BUF_strlcat()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strlcat()` on line 118.
+  565. 	BUF_strlcpy(file,X509_get_default_cert_area(),len + 1);
+  566. #ifndef OPENSSL_SYS_VMS
+  567. 	BUF_strlcat(file,"/",len + 1);
+        ^
+  568. #endif
+  569. 	BUF_strlcat(file,OPENSSL_CONF,len + 1);
+
+#22
+crypto/conf/conf_mod.c:569: error: Use After Free
+  The call to `BUF_strlcat` may trigger the following issue: call to `BUF_strlcat()` eventually accesses memory that was invalidated by call to `free()` during the call to `BUF_strlcat()` on line 118.
+  567. 	BUF_strlcat(file,"/",len + 1);
+  568. #endif
+  569. 	BUF_strlcat(file,OPENSSL_CONF,len + 1);
+        ^
+  570. 
+  571. 	return file;
+
+#23
+crypto/dh/dh_check.c:130: error: Null Dereference
+  `q->dmax` could be null (from the call to `BN_new()` on line 128) and is dereferenced in call to `BN_set_word()`.
+  128. 	q=BN_new();
+  129. 	if (q == NULL) goto err;
+  130. 	BN_set_word(q,1);
+        ^
+  131. 	if (BN_cmp(pub_key,q)<=0)
+  132. 		*ret|=DH_CHECK_PUBKEY_TOO_SMALL;
+
+#24
+crypto/ec/ec_mult.c:917: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `ec_pre_comp_new()` on line 779 is not freed after the last access at line 917, column 3.
+  915. 		BN_CTX_free(new_ctx);
+  916. 	if (pre_comp)
+  917. 		ec_pre_comp_free(pre_comp);
+         ^
+  918. 	if (points)
+  919. 		{
+
+#25
+crypto/engine/eng_lib.c:173: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `int_cleanup_item()` on line 171 is not freed after the last access at line 173, column 3.
+  171. 	item = int_cleanup_item(cb);
+  172. 	if(item)
+  173. 		sk_ENGINE_CLEANUP_ITEM_insert(cleanup_stack, item, 0);
+         ^
+  174. 	}
+  175. void engine_cleanup_add_last(ENGINE_CLEANUP_CB *cb)
+
+#26
+crypto/engine/eng_lib.c:181: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `int_cleanup_item()` on line 179 is not freed after the last access at line 181, column 3.
+  179. 	item = int_cleanup_item(cb);
+  180. 	if(item)
+  181. 		sk_ENGINE_CLEANUP_ITEM_push(cleanup_stack, item);
+         ^
+  182. 	}
+  183. /* The API function that performs all cleanup */
+
+#27
+crypto/err/err.c:424: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_realloc (custom realloc)`, indirectly via call to `lh_delete()` on line 424 is not freed after the last access at line 424, column 2.
+  422. 
+  423. 	CRYPTO_w_lock(CRYPTO_LOCK_ERR);
+  424. 	p = lh_ERR_STRING_DATA_delete(hash, d);
+        ^
+  425. 	CRYPTO_w_unlock(CRYPTO_LOCK_ERR);
+  426. 
+
+#28
+crypto/err/err.c:1107: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 1080 is not freed after the last access at line 1107, column 2.
+  1105. 			}
+  1106. 		}
+  1107. 	ERR_set_error_data(str,ERR_TXT_MALLOCED|ERR_TXT_STRING);
+         ^
+  1108. 	}
+  1109. 
+
+#29
+crypto/evp/digest.c:358: error: Uninitialized Value
+  `ctx.flags` is read without initialization during the call to `EVP_MD_CTX_set_flags()`.
+  356. 
+  357. 	EVP_MD_CTX_init(&ctx);
+  358. 	EVP_MD_CTX_set_flags(&ctx,EVP_MD_CTX_FLAG_ONESHOT);
+        ^
+  359. 	ret=EVP_DigestInit_ex(&ctx, type, impl)
+  360. 	  && EVP_DigestUpdate(&ctx, data, count)
+
+#30
+crypto/evp/evp_pbe.c:253: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 241 is not freed after the last access at line 253, column 2.
+  251. 
+  252. 
+  253. 	sk_EVP_PBE_CTL_push (pbe_algs, pbe_tmp);
+        ^
+  254. 	return 1;
+  255. 	}
+
+#31
+crypto/ex_data.c:361: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 338 is not freed after the last access at line 361, column 8.
+  359. 		}
+  360. 	toret = item->meth_num++;
+  361. 	(void)sk_CRYPTO_EX_DATA_FUNCS_set(item->meth, toret, a);
+              ^
+  362. err:
+  363. 	CRYPTO_w_unlock(CRYPTO_LOCK_EX_DATA);
+
+#32
+crypto/mem.c:331: error: Null Dereference
+  `ret` could be null (last assigned on line 329) and is dereferenced.
+  329. 	char *ret = CRYPTO_malloc(strlen(str)+1, file, line);
+  330. 
+  331. 	strcpy(ret, str);
+        ^
+  332. 	return ret;
+  333. 	}
+
+#33
+crypto/ocsp/ocsp_ht.c:161: error: Null Dereference
+  `rctx` could be null (last assigned on line 160) and is dereferenced.
+  159. 	OCSP_REQ_CTX *rctx;
+  160. 	rctx = OPENSSL_malloc(sizeof(OCSP_REQ_CTX));
+  161. 	rctx->state = OHS_ERROR;
+        ^
+  162. 	rctx->mem = BIO_new(BIO_s_mem());
+  163. 	rctx->io = io;
+
+#34
+crypto/ocsp/ocsp_ht.c:170: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 160 is not freed after the last access at line 170, column 7.
+  168. 		rctx->iobuflen = OCSP_MAX_LINE_LEN;
+  169. 	rctx->iobuf = OPENSSL_malloc(rctx->iobuflen);
+  170. 	if (!rctx->iobuf)
+             ^
+  171. 		return 0;
+  172. 	if (!path)
+
+#35
+crypto/x509/x509_lu.c:360: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 340 is not freed after the last access at line 360, column 7.
+  358. 		ret=0;
+  359. 		} 
+  360. 	else sk_X509_OBJECT_push(ctx->objs, obj);
+             ^
+  361. 
+  362. 	CRYPTO_w_unlock(CRYPTO_LOCK_X509_STORE);
+
+#36
+crypto/x509/x509_lu.c:393: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 373 is not freed after the last access at line 393, column 7.
+  391. 		ret=0;
+  392. 		}
+  393. 	else sk_X509_OBJECT_push(ctx->objs, obj);
+             ^
+  394. 
+  395. 	CRYPTO_w_unlock(CRYPTO_LOCK_X509_STORE);
+
+#37
+crypto/x509/x509_trs.c:197: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `BUF_strdup()` on line 182 is not freed after the last access at line 197, column 5.
+  195. 
+  196. 	/* If its a new entry manage the dynamic table */
+  197. 	if(idx == -1) {
+           ^
+  198. 		if(!trtable && !(trtable = sk_X509_TRUST_new(tr_cmp))) {
+  199. 			X509err(X509_F_X509_TRUST_ADD,ERR_R_MALLOC_FAILURE);
+
+#38
+crypto/x509/x509_vpm.c:92: error: Null Dereference
+  `param` could be null (last assigned on line 91) and is dereferenced.
+  90. 	X509_VERIFY_PARAM *param;
+  91. 	param = OPENSSL_malloc(sizeof(X509_VERIFY_PARAM));
+  92. 	memset(param, 0, sizeof(X509_VERIFY_PARAM));
+       ^
+  93. 	x509_verify_param_zero(param);
+  94. 	return param;
+
+#39
+crypto/x509v3/pcy_tree.c:455: error: Null Dereference
+  `node` could be null (from the call to `sk_value()` on line 453) and is dereferenced in call to `tree_link_unmatched()`.
+  453. 		node = sk_X509_POLICY_NODE_value(last->nodes, i);
+  454. 
+  455. 		if (!tree_link_unmatched(curr, cache, node, tree))
+              ^
+  456. 			return 0;
+  457. 
+
+#40
+crypto/x509v3/v3_purp.c:216: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `BUF_strdup()` on line 200 is not freed after the last access at line 216, column 5.
+  214. 
+  215. 	/* If its a new entry manage the dynamic table */
+  216. 	if(idx == -1) {
+           ^
+  217. 		if(!xptable && !(xptable = sk_X509_PURPOSE_new(xp_cmp))) {
+  218. 			X509V3err(X509V3_F_X509_PURPOSE_ADD,ERR_R_MALLOC_FAILURE);
+
+#41
+engines/ccgost/gost_pmeth.c:35: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)` on line 26 is not freed after the last access at line 35, column 3.
+  33. 		  data->sign_param_nid = gost94_nid_by_params(EVP_PKEY_get0(pkey));
+  34. 		  break;
+  35. 		case NID_id_GostR3410_2001:
+        ^
+  36. 		   data->sign_param_nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(EVP_PKEY_get0((EVP_PKEY *)pkey)));
+  37. 		break;
+
+#42
+engines/e_ubsec.c:828: error: Uninitialized Value
+  `_.dmax` is read without initialization.
+  826. 	BN_init(&v);
+  827. 
+  828. 	if(!bn_wexpand(pv, dsa->p->top)) {
+            ^
+  829. 		UBSECerr(UBSEC_F_UBSEC_DSA_VERIFY, UBSEC_R_BN_EXPAND_FAIL);
+  830. 		goto err;
+
+#43
+ssl/d1_both.c:1183: error: Null Dereference
+  `frag` could be null (from the call to `dtls1_hm_fragment_new()` on line 1181) and is dereferenced.
+  1181. 	frag = dtls1_hm_fragment_new(s->init_num, 0);
+  1182. 
+  1183. 	memcpy(frag->fragment, s->init_buf->data, s->init_num);
+                ^
+  1184. 
+  1185. 	if ( is_ccs)
+
+#44
+ssl/d1_both.c:1229: error: Memory Leak
+  Memory dynamically allocated by `CRYPTO_malloc (custom malloc)`, indirectly via call to `pitem_new()` on line 1216 is not freed after the last access at line 1229, column 2.
+  1227. #endif
+  1228. 
+  1229. 	pqueue_insert(s->d1->sent_messages, item);
+         ^
+  1230. 	return 1;
+  1231. 	}
+
+#45
+ssl/s2_lib.c:338: error: Use After Free
+  call to `ssl2_clear()` eventually accesses memory that was invalidated by call to `free()` during the call to `ssl2_clear()` on line 338.
+  336. 	s->s2=s2;
+  337. 
+  338. 	ssl2_clear(s);
+        ^
+  339. 	return(1);
+  340. err:
+
+#46
+ssl/s3_enc.c:173: error: Uninitialized Value
+  `ctx.flags` is read without initialization during the call to `EVP_MD_CTX_set_flags()`.
+  171. 	k=0;
+  172. 	EVP_MD_CTX_init(&m5);
+  173. 	EVP_MD_CTX_set_flags(&m5, EVP_MD_CTX_FLAG_NON_FIPS_ALLOW);
+        ^
+  174. 	EVP_MD_CTX_init(&s1);
+  175. 	for (i=0; (int)i<num; i+=MD5_DIGEST_LENGTH)
+
+#47
+test/igetest.c:300: error: Use After Free
+  The call to `RAND_pseudo_bytes` ends up calling `CRYPTO_THREADID_current` (after 5 more calls) and may trigger the following issue: call to `RAND_pseudo_bytes()` eventually accesses memory that was invalidated by call to `free()` during the call to `RAND_pseudo_bytes()` on line 507.
+  298. 	assert(BIG_TEST_SIZE >= TEST_SIZE);
+  299. 
+  300. 	RAND_pseudo_bytes(rkey, sizeof rkey);
+        ^
+  301. 	RAND_pseudo_bytes(plaintext, sizeof plaintext);
+  302. 	RAND_pseudo_bytes(iv, sizeof iv);
+
+Found 48 issues
+                      Issue Type(ISSUED_TYPE_ID): #
+                      Memory Leak(MEMORY_LEAK_C): 25
+                  Use After Free(USE_AFTER_FREE): 11
+           Null Dereference(NULLPTR_DEREFERENCE): 9
+  Uninitialized Value(PULSE_UNINITIALIZED_VALUE): 3
