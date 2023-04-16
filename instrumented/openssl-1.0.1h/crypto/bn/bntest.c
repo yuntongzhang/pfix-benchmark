@@ -1029,8 +1029,9 @@ int test_exp(BIO *bp, BN_CTX *ctx)
 		BN_bntest_rand(a,20+i*5,0,0); /**/
 		BN_bntest_rand(b,2+i,0,0); /**/
 
-		if (BN_exp(d,a,b,ctx) <= 0)
+		if (BN_exp(d,a,b,ctx) <= 0) {
 			return(0);
+    }
 
 		if (bp != NULL)
 			{
@@ -1045,8 +1046,9 @@ int test_exp(BIO *bp, BN_CTX *ctx)
 			BIO_puts(bp,"\n");
 			}
 		BN_one(e);
-		for( ; !BN_is_zero(b) ; BN_sub(b,b,one))
+		for( ; !BN_is_zero(b) ; BN_sub(b,b,one)) {
 		    BN_mul(e,e,a,ctx);
+    }
 		BN_sub(e,e,d);
 		if(!BN_is_zero(e))
 		    {
@@ -1829,9 +1831,9 @@ int test_lshift(BIO *bp,BN_CTX *ctx,BIGNUM *a_)
 	d=BN_new();
 	BN_one(c);
 
-	if(a_)
+	if(a_) {
 	    a=a_;
-	else
+	} else
 	    {
 	    a=BN_new();
 	    BN_bntest_rand(a,200,0,0); /**/

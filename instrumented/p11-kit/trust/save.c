@@ -555,16 +555,19 @@ cleanup_directory (const char *directory,
 	remove = p11_dict_new (p11_dict_str_hash, p11_dict_str_equal, free, NULL);
 
 	while ((dp = readdir (dir)) != NULL) {
-		if (p11_dict_get (cache, dp->d_name))
+		if (p11_dict_get (cache, dp->d_name)) {
 			continue;
+    }
 
-		if (asprintf (&path, "%s/%s", directory, dp->d_name) < 0)
+		if (asprintf (&path, "%s/%s", directory, dp->d_name) < 0) {
 			return_val_if_reached (false);
+    }
 
 
 		if (stat (path, &st) >= 0 && !S_ISDIR (st.st_mode)) {
-			if (!p11_dict_set (remove, path, path))
+			if (!p11_dict_set (remove, path, path)) {
 				return_val_if_reached (false);
+      }
 		} else {
 			free (path);
 		}

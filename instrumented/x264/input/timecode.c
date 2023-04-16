@@ -362,10 +362,12 @@ static int open_file( char *psz_filename, hnd_t *p_handle, video_info_t *info, c
     }
     h->auto_timebase_num = !ret;
     h->auto_timebase_den = ret < 2;
-    if( h->auto_timebase_num )
+    if( h->auto_timebase_num ) {
         h->timebase_num = info->fps_den; /* can be changed later by auto timebase generation */
-    if( h->auto_timebase_den )
+    }
+    if( h->auto_timebase_den ) {
         h->timebase_den = 0;             /* set later by auto timebase generation */
+    }
 
     tcfile_in = x264_fopen( psz_filename, "rb" );
     FAIL_IF_ERROR( !tcfile_in, "can't open `%s'\n", psz_filename );
@@ -378,8 +380,9 @@ static int open_file( char *psz_filename, hnd_t *p_handle, video_info_t *info, c
 
     if( parse_tcfile( tcfile_in, h, info ) < 0 )
     {
-        if( h->pts )
+        if( h->pts ) {
             free( h->pts );
+        }
         fclose( tcfile_in );
         return -1;
     }

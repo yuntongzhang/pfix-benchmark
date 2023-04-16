@@ -24,7 +24,9 @@ static int pkey_gost_init(EVP_PKEY_CTX *ctx)
 	struct gost_pmeth_data *data;
 	EVP_PKEY *pkey = EVP_PKEY_CTX_get0_pkey(ctx);
 	data = OPENSSL_malloc(sizeof(struct gost_pmeth_data));
-	if (!data) return 0;
+	if (!data) {
+    return 0;
+  }
 	memset(data,0,sizeof(struct gost_pmeth_data));
 	if (pkey && EVP_PKEY_get0(pkey)) 
 		{

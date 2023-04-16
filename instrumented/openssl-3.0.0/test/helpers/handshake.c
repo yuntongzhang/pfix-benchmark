@@ -272,14 +272,16 @@ static int server_ocsp_cb(SSL *s, void *arg)
     unsigned char *resp;
 
     resp = OPENSSL_malloc(1);
-    if (resp == NULL)
+    if (resp == NULL) {
         return SSL_TLSEXT_ERR_ALERT_FATAL;
+    }
     /*
      * For the purposes of testing we just send back a dummy OCSP response
      */
     *resp = *(unsigned char *)arg;
-    if (!SSL_set_tlsext_status_ocsp_resp(s, resp, 1))
+    if (!SSL_set_tlsext_status_ocsp_resp(s, resp, 1)) {
         return SSL_TLSEXT_ERR_ALERT_FATAL;
+    }
 
     return SSL_TLSEXT_ERR_OK;
 }

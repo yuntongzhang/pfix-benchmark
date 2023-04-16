@@ -58,8 +58,9 @@ static void help( int longhelp )
 static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x264_param_t *param, char *opt_string )
 {
     selvry_hnd_t *h = malloc( sizeof(selvry_hnd_t) );
-    if( !h )
+    if( !h ) {
         return -1;
+    }
     h->pattern_len = 0;
     h->step_size = 0;
     int offsets[MAX_PATTERN_SIZE];
@@ -80,8 +81,9 @@ static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x2
     FAIL_IF_ERROR( !h->pattern_len, "no offsets supplied\n" );
 
     h->pattern = malloc( h->pattern_len * sizeof(int) );
-    if( !h->pattern )
+    if( !h->pattern ) {
         return -1;
+    }
     memcpy( h->pattern, offsets, h->pattern_len * sizeof(int) );
 
     /* determine required cache size to maintain pattern. */
@@ -90,16 +92,19 @@ static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x2
     for( int i = h->pattern_len-1; i >= 0; i-- )
     {
          min = X264_MIN( min, offsets[i] );
-         if( i )
+         if( i ) {
              max_rewind = X264_MAX( max_rewind, offsets[i-1] - min + 1 );
+         }
          /* reached maximum rewind size */
-         if( max_rewind == h->step_size )
+         if( max_rewind == h->step_size ) {
              break;
+         }
     }
     char name[20];
     sprintf( name, "cache_%d", param->i_bitdepth );
-    if( x264_init_vid_filter( name, handle, filter, info, param, (void*)max_rewind ) )
+    if( x264_init_vid_filter( name, handle, filter, info, param, (void*)max_rewind ) ) {
         return -1;
+    }
 
     /* done initing, overwrite properties */
     if( h->step_size != h->pattern_len )

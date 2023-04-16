@@ -54,22 +54,26 @@ static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x2
 {
     intptr_t size = (intptr_t)opt_string;
     /* upon a <= 0 cache request, do nothing */
-    if( size <= 0 )
+    if( size <= 0 ) {
         return 0;
+    }
     cache_hnd_t *h = calloc( 1, sizeof(cache_hnd_t) );
-    if( !h )
+    if( !h ) {
         return -1;
+    }
 
     h->max_size = size;
     h->cache = malloc( (h->max_size+1) * sizeof(cli_pic_t*) );
-    if( !h->cache )
+    if( !h->cache ) {
         return -1;
+    }
 
     for( int i = 0; i < h->max_size; i++ )
     {
         h->cache[i] = malloc( sizeof(cli_pic_t) );
-        if( !h->cache[i] || x264_cli_pic_alloc( h->cache[i], info->csp, info->width, info->height ) )
+        if( !h->cache[i] || x264_cli_pic_alloc( h->cache[i], info->csp, info->width, info->height ) ) {
             return -1;
+        }
     }
     h->cache[h->max_size] = NULL; /* require null terminator for list methods */
 

@@ -151,10 +151,12 @@ static int asn1_bio_new(BIO *b)
 	{
 	BIO_ASN1_BUF_CTX *ctx;
 	ctx = OPENSSL_malloc(sizeof(BIO_ASN1_BUF_CTX));
-	if (!ctx)
+	if (!ctx) {
 		return 0;
-	if (!asn1_bio_init(ctx, DEFAULT_ASN1_BUF_SIZE))
+  }
+	if (!asn1_bio_init(ctx, DEFAULT_ASN1_BUF_SIZE)) {
 		return 0;
+  }
 	b->init = 1;
 	b->ptr = (char *)ctx;
 	b->flags = 0;

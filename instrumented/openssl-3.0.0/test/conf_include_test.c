@@ -44,14 +44,16 @@ static int change_path(const char *file)
     char *last = NULL;
     int ret;
 
-    if (s == NULL)
+    if (s == NULL) {
         return -1;
+    }
 
     while ((p = strpbrk(p, DIRSEP)) != NULL) {
         last = p++;
     }
-    if (last == NULL)
+    if (last == NULL) {
         return 0;
+    }
     last[DIRSEP_PRESERVE] = 0;
 
     TEST_note("changing path to %s", s);

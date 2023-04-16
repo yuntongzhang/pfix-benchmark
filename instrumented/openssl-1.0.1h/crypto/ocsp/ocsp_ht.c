@@ -162,21 +162,26 @@ OCSP_REQ_CTX *OCSP_sendreq_new(BIO *io, char *path, OCSP_REQUEST *req,
 	rctx->mem = BIO_new(BIO_s_mem());
 	rctx->io = io;
 	rctx->asn1_len = 0;
-	if (maxline > 0)
+	if (maxline > 0) {
 		rctx->iobuflen = maxline;
-	else
+  } else {
 		rctx->iobuflen = OCSP_MAX_LINE_LEN;
+  }
 	rctx->iobuf = OPENSSL_malloc(rctx->iobuflen);
-	if (!rctx->iobuf)
+	if (!rctx->iobuf) {
 		return 0;
-	if (!path)
+  }
+	if (!path) {
 		path = "/";
+  }
 
-        if (BIO_printf(rctx->mem, post_hdr, path) <= 0)
+  if (BIO_printf(rctx->mem, post_hdr, path) <= 0) {
 		return 0;
+  }
 
-	if (req && !OCSP_REQ_CTX_set1_req(rctx, req))
+	if (req && !OCSP_REQ_CTX_set1_req(rctx, req)) {
 		return 0;
+  }
 
 	return rctx;
 	}

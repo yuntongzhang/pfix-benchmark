@@ -750,12 +750,14 @@ int do_mkfs_exec_wrapper(void *args)
 	size_t len = 5 + strlen(data[0]) + 1;
 
 	mkfs = malloc(len);
-	if (!mkfs)
+	if (!mkfs) {
 		return -1;
+  }
 
 	ret = snprintf(mkfs, len, "mkfs.%s", data[0]);
-	if (ret < 0 || (size_t)ret >= len)
+	if (ret < 0 || (size_t)ret >= len) {
 		return -1;
+  }
 
 	TRACE("executing \"%s %s\"", mkfs, data[1]);
 	execlp(mkfs, mkfs, data[1], (char *)NULL);

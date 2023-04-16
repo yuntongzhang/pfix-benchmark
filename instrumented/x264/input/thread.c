@@ -57,14 +57,16 @@ static int open_file( char *psz_filename, hnd_t *p_handle, video_info_t *info, c
     h->p_handle = *p_handle;
     h->next_frame = -1;
     h->next_args = malloc( sizeof(thread_input_arg_t) );
-    if( !h->next_args )
+    if( !h->next_args ) {
         return -1;
+    }
     h->next_args->h = h;
     h->next_args->status = 0;
     h->frame_total = info->num_frames;
 
-    if( x264_threadpool_init( &h->pool, 1, NULL, NULL ) )
+    if( x264_threadpool_init( &h->pool, 1, NULL, NULL ) ) {
         return -1;
+    }
 
     *p_handle = h;
     return 0;

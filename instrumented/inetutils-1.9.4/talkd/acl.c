@@ -299,8 +299,9 @@ open_users_acl (char *name)
   acl_t *mark;
 
   pw = getpwnam (name);
-  if (!pw)
+  if (!pw) {
     return NULL;
+  }
 
   filename =
     malloc (strlen (pw->pw_dir) + sizeof (USER_ACL_NAME) +
@@ -319,16 +320,18 @@ open_users_acl (char *name)
    * should either of these not be true.
    */
   rc = stat (filename, &st);
-  if (rc < 0)
+  if (rc < 0) {
     return NULL;
+  }
   if (!S_ISREG(st.st_mode)
       || st.st_uid != pw->pw_uid
       || st.st_gid != pw->pw_gid
       || st.st_mode & S_IWGRP
       || st.st_mode & S_IWOTH)
     {
-      if (logging || debug)
+      if (logging || debug) {
 	syslog (LOG_WARNING, "Discarding '%s': insecure access.", filename);
+      }
       level = -1;	/* Enforce a deny rule.  */
     }
 

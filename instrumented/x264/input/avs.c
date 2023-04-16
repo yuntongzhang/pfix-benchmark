@@ -255,17 +255,21 @@ static float get_avs_version( avs_hnd_t *h )
 
 static int open_file( char *psz_filename, hnd_t *p_handle, video_info_t *info, cli_input_opt_t *opt )
 {
+    int __efffix_tmp;
     FILE *fh = x264_fopen( psz_filename, "r" );
-    if( !fh )
+    if( !fh ) {
         return -1;
+    }
     int b_regular = x264_is_regular_file( fh );
     fclose( fh );
     FAIL_IF_ERROR( !b_regular, "AVS input is incompatible with non-regular file `%s'\n", psz_filename );
 
     avs_hnd_t *h = calloc( 1, sizeof(avs_hnd_t) );
-    if( !h )
+    if( !h ) {
         return -1;
-    FAIL_IF_ERROR( custom_avs_load_library( h ), "failed to load avisynth\n" );
+    }
+    __efffix_tmp = custom_avs_load_library( h );
+    FAIL_IF_ERROR( __efffix_tmp, "failed to load avisynth\n" );
     h->env = h->func.avs_create_script_environment( AVS_INTERFACE_25 );
     if( h->func.avs_get_error )
     {
@@ -273,8 +277,9 @@ static int open_file( char *psz_filename, hnd_t *p_handle, video_info_t *info, c
         FAIL_IF_ERROR( error, "%s\n", error );
     }
     float avs_version = get_avs_version( h );
-    if( avs_version <= 0 )
+    if( avs_version <= 0 ) {
         return -1;
+    }
     x264_cli_log( "avs", X264_LOG_DEBUG, "using avisynth version %.2f\n", avs_version );
 
 #ifdef _WIN32

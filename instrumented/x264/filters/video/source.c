@@ -40,12 +40,14 @@ cli_vid_filter_t source_filter;
 static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x264_param_t *param, char *opt_string )
 {
     source_hnd_t *h = calloc( 1, sizeof(source_hnd_t) );
-    if( !h )
+    if( !h ) {
         return -1;
+    }
     h->cur_frame = -1;
 
-    if( cli_input.picture_alloc( &h->pic, *handle, info->csp, info->width, info->height ) )
+    if( cli_input.picture_alloc( &h->pic, *handle, info->csp, info->width, info->height ) ) {
         return -1;
+    }
 
     h->hin = *handle;
     *handle = h;

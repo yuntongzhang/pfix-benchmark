@@ -116,19 +116,27 @@ void ipset_free( IPSET * ipc )
 
 int     ipset_add     ( IPSET * ipset, sfcidr_t *ip, void * vport, int notflag)
 {
-    if( !ipset ) return -1;
+    int __efffix_tmp;
+    if( !ipset ) {
+        return -1;
+    }
 
     {
         PORTSET  * portset = (PORTSET *) vport;
         IP_PORT *p = (IP_PORT*)calloc( 1,sizeof(IP_PORT) );
-        if(!p) return -1;
+        if(!p) {
+          return -1;
+        }
 
         sfip_set_ip(&p->ip, ip);
         p->portset = *portset;
         p->notflag = (char)notflag;
 
-        if( notflag )sflist_add_head( &ipset->ip_list, p ); // test NOT items 1st
-        else         sflist_add_tail( &ipset->ip_list, p );
+        if( notflag ) {
+          __efffix_tmp = sflist_add_head( &ipset->ip_list, p ); // test NOT items 1st
+        } else        {
+          __efffix_tmp = sflist_add_tail( &ipset->ip_list, p );
+        }
     }
 
     return 0;
@@ -216,18 +224,23 @@ static void portset_init( PORTSET * portset )
 }
 
 static int portset_add(PORTSET * portset, unsigned port_lo, unsigned port_hi)
-{
+{   
+    int __efffix_tmp;
     PORTRANGE *p;
 
-    if( !portset ) return -1;
+    if( !portset ) {
+        return -1;
+    }
 
     p = (PORTRANGE *) calloc( 1,sizeof(PORTRANGE) );
-    if(!p) return -1;
+    if(!p) {
+        return -1;
+    }
 
     p->port_lo = port_lo;
     p->port_hi = port_hi;
 
-    sflist_add_tail(&portset->port_list, p );
+    __efffix_tmp = sflist_add_tail(&portset->port_list, p );
 
     return 0;
 }

@@ -803,7 +803,9 @@ static MIME_HEADER *mime_hdr_new(char *name, char *value)
 	char *tmpname, *tmpval, *p;
 	int c;
 	if(name) {
-		if(!(tmpname = BUF_strdup(name))) return NULL;
+		if(!(tmpname = BUF_strdup(name))) {
+      return NULL;
+    }
 		for(p = tmpname ; *p; p++) {
 			c = (unsigned char)*p;
 			if(isupper(c)) {
@@ -811,9 +813,13 @@ static MIME_HEADER *mime_hdr_new(char *name, char *value)
 				*p = c;
 			}
 		}
-	} else tmpname = NULL;
+	} else {
+    tmpname = NULL;
+  }
 	if(value) {
-		if(!(tmpval = BUF_strdup(value))) return NULL;
+		if(!(tmpval = BUF_strdup(value))) {
+      return NULL;
+    }
 		for(p = tmpval ; *p; p++) {
 			c = (unsigned char)*p;
 			if(isupper(c)) {
@@ -821,12 +827,18 @@ static MIME_HEADER *mime_hdr_new(char *name, char *value)
 				*p = c;
 			}
 		}
-	} else tmpval = NULL;
+	} else {
+    tmpval = NULL;
+  }
 	mhdr = (MIME_HEADER *) OPENSSL_malloc(sizeof(MIME_HEADER));
-	if(!mhdr) return NULL;
+	if(!mhdr) {
+    return NULL;
+  }
 	mhdr->name = tmpname;
 	mhdr->value = tmpval;
-	if(!(mhdr->params = sk_MIME_PARAM_new(mime_param_cmp))) return NULL;
+	if(!(mhdr->params = sk_MIME_PARAM_new(mime_param_cmp))) {
+    return NULL;
+  }
 	return mhdr;
 }
 		
