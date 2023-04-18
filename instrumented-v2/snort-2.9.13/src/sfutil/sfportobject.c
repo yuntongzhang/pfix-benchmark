@@ -793,21 +793,25 @@ PortObject2 * PortObject2Dup( PortObject * po )
 */
 int PortObjectAddPort( PortObject * po, int port, int not_flag )
 {
+   int __efffix_tmp;
    PortObjectItem * poi;
 
    poi = PortObjectItemNew();
-   if( !poi )
+   if( !poi ) {
        return -1;
+   }
 
    poi->type = PORT_OBJECT_PORT;
 
-   if( not_flag )
+   if( not_flag ) {
        poi->flags = PORT_OBJECT_NOT_FLAG;
+   }
 
    poi->lport = (unsigned short)port;
    poi->hport = (unsigned short)port;
 
-   return  sflist_add_tail( po->item_list, poi );
+   __efffix_tmp = sflist_add_tail( po->item_list, poi );
+   return __efffix_tmp;
 }
 
 /*
@@ -815,21 +819,25 @@ int PortObjectAddPort( PortObject * po, int port, int not_flag )
 */
 int PortObjectAddRange( PortObject * po, int lport, int hport, int not_flag )
 {
+   int __efffix_tmp;
    PortObjectItem * poi;
 
    poi = PortObjectItemNew();
-   if( !poi )
+   if( !poi ) {
        return -1;
+   }
 
    poi->type = PORT_OBJECT_RANGE;
 
-   if( not_flag )
+   if( not_flag ) {
        poi->flags = PORT_OBJECT_NOT_FLAG;
+   }
 
    poi->lport = (unsigned short)lport;
    poi->hport = (unsigned short)hport;
 
-   return  sflist_add_tail( po->item_list, poi );
+   __efffix_tmp = sflist_add_tail( po->item_list, poi );
+   return __efffix_tmp;
 }
 /*
    Add ANY port
@@ -1461,6 +1469,7 @@ int PortObjectEqual( PortObject * a, PortObject *b )
 */
 PortObject * PortObjectAppend(PortObject * poa, PortObject * pob )
 {
+   int __efffix_tmp;
    PortObjectItem * poia;
    PortObjectItem * poib;
 
@@ -1470,18 +1479,20 @@ PortObject * PortObjectAppend(PortObject * poa, PortObject * pob )
    {
        poia = PortObjectItemNew();
 
-       if(!poia)
+       if(!poia) {
            return 0;
+       }
 
        memcpy(poia,poib,sizeof(PortObjectItem));
 
-       sflist_add_tail(poa->item_list,poia);
+       __efffix_tmp = sflist_add_tail(poa->item_list,poia);
    }
    return poa;
 }
 /* Dup and append rule list numbers from pob to poa */
 PortObject * PortObjectAppendPortObject(PortObject * poa, PortObject * pob )
 {
+   int __efffix_tmp;
    int * prid;
    int * prid2;
    SF_LNODE * lpos;
@@ -1491,10 +1502,11 @@ PortObject * PortObjectAppendPortObject(PortObject * poa, PortObject * pob )
         prid = (int*)sflist_nextpos(pob->rule_list,&lpos) )
    {
        prid2 = calloc( 1, sizeof(int));
-       if( !prid2 )
+       if( !prid2 ) {
            return 0;
+       }
        *prid2 = *prid;
-       sflist_add_tail(poa->rule_list,prid2);
+       __efffix_tmp = sflist_add_tail(poa->rule_list,prid2);
    }
    return poa;
 }
@@ -1724,14 +1736,17 @@ int PortTableNormalizeInputPortObjects( PortTable *p )
 
 int PortObjectAddRule( PortObject * po , int rule )
 {
+    int __efffix_tmp;
     int * pruleid;
 
     //LogMessage("Adding Rule %d to Port Object '%s'\n",rule,po->name);
-    if( !po )
+    if( !po ) {
         return -1;
+    }
 
-    if( !po->rule_list )
+    if( !po->rule_list ) {
         return -1;
+    }
 
     /* Add rule index to rule list */
     pruleid = calloc(1,sizeof(int));
@@ -1742,7 +1757,7 @@ int PortObjectAddRule( PortObject * po , int rule )
 
     *pruleid = rule;
 
-    sflist_add_tail( po->rule_list, pruleid );
+    __efffix_tmp = sflist_add_tail( po->rule_list, pruleid );
 
     return 0;
 }

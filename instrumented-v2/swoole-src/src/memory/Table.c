@@ -82,6 +82,7 @@ swTable* swTable_new(uint32_t rows_size)
 
 int swTableColumn_add(swTable *table, char *name, int len, int type, int size)
 {
+    int __efffix_tmp;
     swTableColumn *col = sw_malloc(sizeof(swTableColumn));
     col->name = swString_dup(name, len);
     if (!col->name)
@@ -128,7 +129,8 @@ int swTableColumn_add(swTable *table, char *name, int len, int type, int size)
     col->index = table->item_size;
     table->item_size += col->size;
     table->column_num ++;
-    return swHashMap_add(table->columns, name, len, col);
+    __efffix_tmp = swHashMap_add(table->columns, name, len, col);
+    return __efffix_tmp;
 }
 
 int swTable_create(swTable *table)

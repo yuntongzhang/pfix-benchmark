@@ -101,10 +101,12 @@ static void *init_object(void)
 
     obj->p1 = p1_init;
     obj->p2 = p2_init;
-    if (!TEST_true(BN_hex2bn(&obj->p3, p3_init)))
+    if (!TEST_true(BN_hex2bn(&obj->p3, p3_init))) {
         goto fail;
-    if (!TEST_ptr(obj->p4 = OPENSSL_strdup(p4_init)))
+    }
+    if (!TEST_ptr(obj->p4 = OPENSSL_strdup(p4_init))) {
         goto fail;
+    }
     strcpy(obj->p5, p5_init);
     obj->p6 = p6_init;
 

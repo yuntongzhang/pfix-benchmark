@@ -353,8 +353,9 @@ p11_asn1_cache_take (p11_asn1_cache *cache,
 		return_if_reached ();
 	}
 
-	if (!p11_dict_set (cache->items, (void *)der, item))
+	if (!p11_dict_set (cache->items, (void *)der, item)) {
 		return_if_reached ();
+  }
 }
 
 void
