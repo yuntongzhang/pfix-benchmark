@@ -208,6 +208,8 @@
 #define PO_INIT_ID 1000000
 #define PO_HASH_TBL_ROWS 10000
 
+int __efffix_tmp;
+
 /*
    Hash Key Comparisons for treating PortObjects as Keys
 
@@ -793,7 +795,6 @@ PortObject2 * PortObject2Dup( PortObject * po )
 */
 int PortObjectAddPort( PortObject * po, int port, int not_flag )
 {
-   int __efffix_tmp;
    PortObjectItem * poi;
 
    poi = PortObjectItemNew();
@@ -819,7 +820,6 @@ int PortObjectAddPort( PortObject * po, int port, int not_flag )
 */
 int PortObjectAddRange( PortObject * po, int lport, int hport, int not_flag )
 {
-   int __efffix_tmp;
    PortObjectItem * poi;
 
    poi = PortObjectItemNew();
@@ -1469,7 +1469,6 @@ int PortObjectEqual( PortObject * a, PortObject *b )
 */
 PortObject * PortObjectAppend(PortObject * poa, PortObject * pob )
 {
-   int __efffix_tmp;
    PortObjectItem * poia;
    PortObjectItem * poib;
 
@@ -1492,7 +1491,6 @@ PortObject * PortObjectAppend(PortObject * poa, PortObject * pob )
 /* Dup and append rule list numbers from pob to poa */
 PortObject * PortObjectAppendPortObject(PortObject * poa, PortObject * pob )
 {
-   int __efffix_tmp;
    int * prid;
    int * prid2;
    SF_LNODE * lpos;
@@ -1736,7 +1734,6 @@ int PortTableNormalizeInputPortObjects( PortTable *p )
 
 int PortObjectAddRule( PortObject * po , int rule )
 {
-    int __efffix_tmp;
     int * pruleid;
 
     //LogMessage("Adding Rule %d to Port Object '%s'\n",rule,po->name);

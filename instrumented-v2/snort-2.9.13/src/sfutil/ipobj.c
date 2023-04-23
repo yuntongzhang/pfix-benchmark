@@ -53,7 +53,7 @@
 #include "util.h"
 #include "snort_bounds.h"
 
-
+int __efffix_tmp;
 
 /*
 
@@ -116,7 +116,6 @@ void ipset_free( IPSET * ipc )
 
 int     ipset_add     ( IPSET * ipset, sfcidr_t *ip, void * vport, int notflag)
 {
-    int __efffix_tmp;
     if( !ipset ) {
         return -1;
     }
@@ -225,7 +224,6 @@ static void portset_init( PORTSET * portset )
 
 static int portset_add(PORTSET * portset, unsigned port_lo, unsigned port_hi)
 {
-    int __efffix_tmp;
     PORTRANGE *p;
 
     if( !portset ) {
