@@ -72,7 +72,7 @@ static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x2
     {
         h->cache[i] = malloc( sizeof(cli_pic_t) );
         if( !h->cache[i] || x264_cli_pic_alloc( h->cache[i], info->csp, info->width, info->height ) ) {
-            return -1;
+            return -1; 
         }
     }
     h->cache[h->max_size] = NULL; /* require null terminator for list methods */

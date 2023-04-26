@@ -208,7 +208,7 @@
 #define PO_INIT_ID 1000000
 #define PO_HASH_TBL_ROWS 10000
 
-int __efffix_tmp;
+static int __efffix_tmp;
 
 /*
    Hash Key Comparisons for treating PortObjects as Keys

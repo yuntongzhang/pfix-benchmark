@@ -53,7 +53,7 @@
 #include "util.h"
 #include "snort_bounds.h"
 
-int __efffix_tmp;
+static int __efffix_tmp;
 
 /*
 

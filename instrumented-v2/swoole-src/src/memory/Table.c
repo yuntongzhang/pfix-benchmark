@@ -26,6 +26,7 @@ static int insert_count = 0;
 static int conflict_max_level = 0;
 #endif
 
+static int __efffix_tmp;
 static void swTableColumn_free(swTableColumn *col);
 
 static void swTableColumn_free(swTableColumn *col)
@@ -82,7 +83,6 @@ swTable* swTable_new(uint32_t rows_size)
 
 int swTableColumn_add(swTable *table, char *name, int len, int type, int size)
 {
-    int __efffix_tmp;
     swTableColumn *col = sw_malloc(sizeof(swTableColumn));
     col->name = swString_dup(name, len);
     if (!col->name)
