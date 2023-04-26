@@ -29,6 +29,7 @@
 
 #define thread_input x264_glue3(thread, BIT_DEPTH, input)
 
+static int __efffix_tmp;
 typedef struct
 {
     cli_input_t input;
@@ -51,7 +52,8 @@ typedef struct thread_input_arg_t
 static int open_file( char *psz_filename, hnd_t *p_handle, video_info_t *info, cli_input_opt_t *opt )
 {
     thread_hnd_t *h = malloc( sizeof(thread_hnd_t) );
-    FAIL_IF_ERR( !h || cli_input.picture_alloc( &h->pic, *p_handle, info->csp, info->width, info->height ),
+    __efffix_tmp = cli_input.picture_alloc( &h->pic, *p_handle, info->csp, info->width, info->height );
+    FAIL_IF_ERR( !h || __efffix_tmp,
                  "x264", "malloc failed\n" );
     h->input = cli_input;
     h->p_handle = *p_handle;

@@ -1485,6 +1485,7 @@ PortObject * PortObjectAppend(PortObject * poa, PortObject * pob )
        memcpy(poia,poib,sizeof(PortObjectItem));
 
        __efffix_tmp = sflist_add_tail(poa->item_list,poia);
+       ;
    }
    return poa;
 }
@@ -1505,6 +1506,7 @@ PortObject * PortObjectAppendPortObject(PortObject * poa, PortObject * pob )
        }
        *prid2 = *prid;
        __efffix_tmp = sflist_add_tail(poa->rule_list,prid2);
+       ;
    }
    return poa;
 }
