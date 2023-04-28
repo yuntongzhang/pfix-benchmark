@@ -132,7 +132,7 @@ int     ipset_add     ( IPSET * ipset, sfcidr_t *ip, void * vport, int notflag)
         p->notflag = (char)notflag;
 
         if( notflag ) {
-            __efffix_tmp = sflist_add_head( &ipset->ip_list, p ); // test NOT items 1st
+            __efffix_tmp = sflist_add_head( &ipset->ip_list, p );
         } else        {
             __efffix_tmp = sflist_add_tail( &ipset->ip_list, p );
         }
